@@ -1,0 +1,30 @@
+name: Build and Package JAR
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Build with Maven
+        run: mvn clean package
+
+      - name: Upload artifact to repo
+        uses: actions/upload-artifact@v4
+        with:
+          name: myapp-jar
+          path: target/myapp-1.0-SNAPSHOT.jar
